@@ -3,7 +3,6 @@ from pprint import pformat
 
 
 class DotDict(dict):
-
     def __init__(self, *args, **kwargs):
         super().__init__()
         for arg in args:
@@ -145,7 +144,7 @@ class DotDict(dict):
     @classmethod
     def __raise_not_supported(cls, value):
         t = cls._pretty_type(value)
-        raise TypeError(f'{t} is not supported')
+        raise TypeError(f"{t} is not supported")
 
     @staticmethod
     def __pretty_type(value):
