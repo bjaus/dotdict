@@ -51,7 +51,7 @@ class DotDict(dict):
         self.__setitem__(key, value)
 
     def __setitem__(self, key, value):
-        self.__dict__[key] = self.__handle_recursion(value)
+        self.__dict__[key] = self.__traverse(value)
 
     def __str__(self):
         return self.__repr__()
@@ -120,11 +120,13 @@ class DotDict(dict):
             self[k] = v
 
     @classmethod
-    def __handle_recursion(cls, value):
+    def __traverse(cls, value):
+        if not isinstance(value, cls) and hasattr(value, 'to_dict'):
+            value = value.to_dict()
         if isinstance(value, dict):
             value = cls(value)
         elif isinstance(value, (list, tuple, set)):
-            v = [cls.__handle_recursion(v) for v in value]
+            v = [cls.__traverse(v) for v in value]
             if isinstance(value, tuple):
                 value = tuple(v)
             elif isinstance(value, set):
